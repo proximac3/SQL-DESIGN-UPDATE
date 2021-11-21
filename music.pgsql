@@ -14,55 +14,55 @@ CREATE TABLE artists(
 
 CREATE TABLE producers (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL UNIQUE,
-  publisher TEXT DEFAULT 'independent'
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE album (
   id SERIAL PRIMARY KEY,
   album_name TEXT NOT NULL,
   number_of_songs INTEGER not null,
-  release_date DATE NOT NULL,
-  producers TEXT NOT NULL
+  release_date DATE NOT NULL
 );
 
 CREATE TABLE song (
   id SERIAL PRIMARY KEY,
   title TEXT NOT NULL UNIQUE,
   album INTEGER REFERENCES album,
-  song_duration FLOAT
+  song_duration FLOAT,
+  featured_artist INTEGER REFERENCES artist
 );
 
 
-CREATE TABLE artist_producer_of_song(
+CREATE Table album_productions (
   id SERIAL PRIMARY KEY,
-  song TEXT REFERENCES song (title),
-  artist TEXT NOT NULL REFERENCES artists(artist_name),
-  producers TEXT NOT NULL REFERENCES producers(name)
+  album_name INTEGER NOT NULL REFERENCES album,
+  artist Integer NOT NULL REFERENCES artist,
+  producer INTEGER NOT NULL REFERENCES producer
 );
+
+
 
 INSERT INTO artists (artist_name)
 VALUES
-  ('Mac Miller'), ('Adele'), ('Drake');
+  ('Mac Miller'), ('Adele'), ('Drake'), ('Roger Waters');
 
-INSERT INTO producers(name, publisher)
+INSERT INTO producers(name)
 VALUES 
-  ('Mac Miller', 'Werner'), ('Timberland', 'Geko');
+  ('Mac Miller',), ('Timberland');
 
-Insert into album (album_name, number_of_songs, release_date, producers)
+Insert into album (album_name, number_of_songs, release_date)
 VALUES
-  ('GO:ODAM', 17, '2015-08-08', '{"Mac Miller", "Werner"}');
+  ('GO:ODAM', 17, '2015-08-08');
 
 
-INSERT INTO song (title, album, song_duration) 
-VALUES ('weekend', 1, 3.40);
+INSERT INTO song (title, album, song_duration, featured_artist) 
+VALUES ('weekend', 1, 3.40, 2);
 
-INSERT INTO artist_producer_of_song(song, artist, producers)
+
+INSERT INTO album_productions 
+  (album_name, artist, producer)
 VALUES 
-  ('weekend', 'Mac Miller', 'Timberland');
-
-
-
+  (1,1,2);
 
 
 
@@ -76,7 +76,6 @@ VALUES
 --   album TEXT NOT NULL,
 --   producers TEXT[] NOT NULL
 -- );
-
 
 -- INSERT INTO songs
 --   (title, duration_in_seconds, release_date, artists, album, producers)

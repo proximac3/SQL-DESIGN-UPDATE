@@ -35,20 +35,33 @@ CREATE TABLE airline
   airline_name TEXT NOT NULL
 );
 
+CREATE TABLE terminal_gates (
+    id SERIAL PRIMARY KEY,
+    gate_number Text NOT NULL
+);
+
+CREATE TABLE flight (
+  id SERIAL PRIMARY KEY,
+  airline Integer not null REFERENCES airline,
+  from_country INTEGER REFERENCES country,
+  from_city INTEGER REFERENCES from_city,
+  to_city Integer REFERENCES to_city,
+  to_country INTEGER REFERENCES to_country,
+  departure_time TIMESTAMP,
+  arrival_time TIMESTAMP,
+  flight_date Date
+);
 
 CREATE TABLE ticket 
 (
   id SERIAL PRIMARY KEY,
   name INTEGER not null REFERENCES passenger,
-  airline INTEGER NOT NULL REFERENCES airline,
   seat TEXT NOT NULL,
-  from_country INTEGER REFERENCES country,
-  from_city INTEGER REFERENCES city,
-  to_city INTEGER REFERENCES city,
-  to_country INTEGER REFERENCES country,
-  departure TIMESTAMP,
-  arrival Timestamp
+  flight INTEGER REFERENCES flight,
+  boarding_time Timestamp,
+  gate INTEGER REFERENCES terminal_gates
 );
+
 
 
 INSERT INTO passenger(first_name, last_name, DOB)
@@ -100,9 +113,23 @@ VALUES
   ('Avianca Brasil'),
   ('KLM');
 
+INSERT INTO terminal_gates 
+  (gate_number)
+VALUES
+  ('3A')
+  ('4C')
+  ('9B')
+  ('4T')
+  ('69');
+
+INSERT INTO flight
+  (airline, from_country, from_city, to_city, to_country, 
+  departure_time, arrival_time, flight_date)
+VALUES
+  (1, 1, 3, 2, 2, '2021-19-15', '2021-19-16', '2021-09-15')
 
 
 INSERT INTO ticket
-  (name, airline, seat, from_country, from_city, to_city, to_country, departure, arrival)
+  (name, seat, fligh, boarding_time, gate)
 VALUES
-  (1 , 1,'33B', 1, 1, 4, 1, '2018-04-08 09:00:00', '2018-04-08 12:00:00' );
+  (1 , '11B', 1, '2021-19-20', 5);

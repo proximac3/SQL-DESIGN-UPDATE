@@ -12,24 +12,24 @@ CREATE TABLE planet (
   name TEXT NOT NULL UNIQUE,
   orbits_around TEXT NOT NULL,
   orbital_period_in_years Float NOT NULL,
-  moons TEXT []
+  solar_system INTEGER REFERENCES solar_system
+);
+
+CREATE TABLE moons (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  orbits_around INTEGER REFERENCES planet
 );
 
 CREATE TABLE solar_system (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL UNIQUE
+  name TEXT NOT NULL UNIQUE,
+  galaxy INTEGER NOT NULL REFERENCES galaxies
 );
 
 CREATE TABLE galaxies(
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE current_system (
-  id SERIAL PRIMARY KEY,
-  galaxy TEXT NOT NULL references galaxies(name),
-  solar_system TEXT NOT NULL references solar_system(name),
-  planet text NOT NULL references planet(name)
 );
 
 
@@ -45,18 +45,16 @@ VALUES
   ('Bernard Star');
 
 INSERT INTO planet 
-  (name, orbits_around, orbital_period_in_years, moons)
+  (name, orbits_around, orbital_period_in_years, solar_system)
 VALUES 
-  ('Earth', 'The Sun', 1.00, '{"The Moon"}'),
-  ('Mars', 'The Sun', 1.88, '{"Phobes", "Deimos"}'),
-  ('Venus', 'The Sun', 0.62, '{}'),
-  ('Proxima Centauri b', 'Toliman', 0.03, '{}');
+  ('Earth', 'The Sun', 1.00, 1),
+  ('Mars', 'The Sun', 1.88, 1),
+  ('Venus', 'The Sun', 0.62, 1),
+  ('Proxima Centauri b', 'Toliman', 0.03, 2);
 
-
-INSERT INTO current_system 
-  (galaxy, solar_system, planet)
+INSERT INTO 
+  (name, orbits_around)
 VALUES 
-  ('Milky Way', 'The Solar System', 'Earth'),
-  ('Milky Way', 'The Solar System', 'Mars'),
-  ('Milky Way', 'Alpha Centauri', 'Proxima Centauri b');
-
+  ('Moon', 1)
+  ('Phobes', 2)
+  ('Deomos', 2);

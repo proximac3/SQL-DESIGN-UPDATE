@@ -8,7 +8,7 @@ CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     user_name TEXT NOT NULL,
     email TEXT not NULL UNIQUE,
-    passqord TEXT NOT NULL,
+    password TEXT NOT NULL,
     preferred_region INTEGER REFERENCES region 
 ); 
 
@@ -23,11 +23,17 @@ CREATE TABLE categories (
     category_name TEXT NOT NULL
 );
 
+CREATE TABLE location (
+    id SERIAL PRIMARY KEY,
+    name Text Not null
+);
 
-CREATE TABLE posts (
+
+CREATE TABLE post (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     title TEXT NOT NULL,
     post TEXT NOT NULL,
     category INTEGER REFERENCES categories,
+    location INTEGER REFERENCES location
 );
